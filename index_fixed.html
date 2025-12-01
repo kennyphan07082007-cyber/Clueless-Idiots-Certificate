@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificate Generator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0e4d92, #031b33);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #eee;
+    }
+
+    .container {
+      background: rgba(255,255,255,0.08);
+      padding: 25px 30px;
+      border-radius: 14px;
+      width: 420px;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #ff8c42;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 16px;
+    }
+
+    button {
+      background: #ff8c42;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 15px;
+      width: 100%;
+      font-size: 16px;
+      box-shadow: 0 0 10px rgba(255,140,66,0.6);
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      transition: 0.15s;
+    }
+
+    /* Certificate layout fixed */
+    .certificate {
+      width: 800px;
+      height: 550px;
+      margin-top: 30px;
+      background: linear-gradient(160deg, #031b33, #083865, #0e4d92);
+      border: 6px solid #ff8c42;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(255,140,66,0.6);
+
+      display: flex;
+      flex-direction: column; /* FIXED: vertical layout */
+      justify-content: center;
+      align-items: center;
+
+      position: relative;
+      font-family: "Georgia", serif;
+      color: #ffb36b;
+      text-align: center;
+    }
+
+    .certificate::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      border: 2px solid rgba(255,255,255,0.45);
+      border-radius: 12px;
+    }
+
+    #certName {
+      font-size: 40px;
+      font-weight: bold;
+      margin-top: 15px;
+      color: #ffcc88;
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Tạo Certificate</h2>
+    <label for="nameInput">Nhập tên bạn vào đây:</label>
+    <input type="text" id="nameInput" placeholder="Ví dụ: Phan Anh Khoa" />
+    <button onclick="generateCert()">Tạo chứng nhận</button>
+  </div>
+
+  <div class="certificate" id="certificate">
+    <h1 style="font-size:42px; letter-spacing:1px;">KYC 2025 - Empowered to Act</h1>
+    <p style="font-size:20px;">Trao tặng cho</p>
+
+    <div id="certName"></div>
+
+    <p style="margin-top:35px; max-width:75%; font-size:18px;">
+      Cảm ơn bạn vì đã góp sức mình vào hành động xanh “vĩ mô” này.
+      Chúc bạn thành công trong cuộc sống!
+    </p>
+
+    <p style="margin-top:40px; font-style:italic; font-size:20px;">— Clueless Idiots —</p>
+  </div>
+
+  <button id="downloadBtn" style="display:none;">Tải Certificate</button>
+
+  <script>
+    function generateCert() {
+      const name = document.getElementById("nameInput").value.trim();
+      if (!name) return alert("Vui lòng nhập tên!");
+
+      document.getElementById("certName").innerText = name;
+      document.getElementById("certificate").style.display = "flex";
+      document.getElementById("downloadBtn").style.display = "inline-block";
+    }
+
+    document.getElementById("downloadBtn").onclick = function () {
+      const cert = document.getElementById("certificate");
+
+      html2canvas(cert, { scale: 3 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "certificate.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    };
+  </script>
+
+</body>
+</html>
